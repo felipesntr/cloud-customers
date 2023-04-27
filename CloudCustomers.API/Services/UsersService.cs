@@ -9,11 +9,16 @@ namespace CloudCustomers.API.Services
 
     public class UsersService : IUsersService
     {
-        public UsersService() { }
+        public readonly HttpClient _httpClient;
+        public UsersService(HttpClient httpClient) {
+            _httpClient = httpClient;
+        }
 
-        public Task<List<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var usersResponse = await _httpClient.GetAsync("https://example.com");
+            var users = await usersResponse.Content.ReadFromJsonAsync<List<User>>();
+            return users; 
         }
     }
 }
